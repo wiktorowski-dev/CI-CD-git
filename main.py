@@ -23,8 +23,9 @@ class GitPuller(object):
         return paths
 
     @staticmethod
-    def __manage_update(x):
-        os.chdir(x)
+    def __manage_update(path):
+        path = os.path.split(path)[0]
+        os.chdir(path)
         os.system('git pull')
 
 
