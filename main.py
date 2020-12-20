@@ -10,7 +10,7 @@ class GitPuller(object):
 
     def __main_work_flow(self):
         while True:
-            time.sleep(5)
+            time.sleep(15)
             paths = self.__find_git_directories()
             [self.__manage_update(x) for x in paths]
 
@@ -22,8 +22,10 @@ class GitPuller(object):
         paths = [x for x in paths if x]
         return paths
 
-    def __manage_update(self, x):
-        pass
+    @staticmethod
+    def __manage_update(x):
+        os.chdir(x)
+        os.system('git pull')
 
 
 if __name__ == '__main__':
