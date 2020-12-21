@@ -32,7 +32,9 @@ class GitPuller(object):
         repo = git.Repo(os.getcwd())
         if repo.is_dirty(untracked_files=True):
             os.system('git reset --hard HEAD')
+            time.sleep(1)
             repo.remotes.origin.pull()
+            time.sleep(1.5)
             return True
 
 
