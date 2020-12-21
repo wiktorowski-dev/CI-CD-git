@@ -13,7 +13,9 @@ class GitPuller(object):
         while True:
             time.sleep(15)
             paths = self.__find_git_directories()
-            [self.__manage_update(x) for x in paths]
+            out = [self.__manage_update(x) for x in paths]
+            if True in out:
+                os.system('reboot now')
 
     @staticmethod
     def __find_git_directories():
@@ -31,7 +33,7 @@ class GitPuller(object):
         if repo.is_dirty(untracked_files=True):
             os.system('git reset --hard HEAD')
             repo.remotes.origin.pull()
-        print(23)
+            return True
 
 
 if __name__ == '__main__':
