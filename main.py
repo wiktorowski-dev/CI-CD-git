@@ -19,7 +19,7 @@ class GitPuller(object):
             out = [self.__manage_update(x) for x in paths]
             if True in out:
                 logging.info('Attempt to the reboot')
-                print('Attempt to the reboot')
+                print('Attempt to the reboot the machine')
                 os.system('reboot now')
             else:
                 print('Nothing found to update, sleeping')
