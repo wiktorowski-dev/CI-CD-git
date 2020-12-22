@@ -32,7 +32,7 @@ class GitPuller(object):
         paths = paths.stdout.decode('UTF-8')
         paths = paths.split('\n')
         paths = [x for x in paths if x]
-        paths = [print(x) for x in paths]
+        [print(x) for x in paths]
         return paths
 
     @staticmethod
@@ -56,5 +56,3 @@ class GitPuller(object):
 
 if __name__ == '__main__':
     GitPuller()
-
-# fake comment
