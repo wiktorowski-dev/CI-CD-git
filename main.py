@@ -12,6 +12,8 @@ class GitPuller(object):
         self.__main_work_flow()
 
     def __main_work_flow(self):
+        print('Starting work')
+        logging.info('Starting work')
         while True:
             paths = self.__find_git_directories()
             out = [self.__manage_update(x) for x in paths]
@@ -19,6 +21,9 @@ class GitPuller(object):
                 logging.info('Attempt to the reboot')
                 print('Attempt to the reboot')
                 os.system('reboot now')
+            else:
+                print('Nothing found to update, sleeping')
+                logging.info('Nothing found to update, sleeping')
             time.sleep(15)
 
     @staticmethod
