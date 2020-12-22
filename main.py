@@ -40,7 +40,7 @@ class GitPuller(object):
         path = os.path.split(path)[0]
         os.chdir(path)
         repo = git.Repo(os.getcwd())
-        if repo.is_dirty(untracked_files=False):
+        if repo.is_dirty(untracked_files=True):
             t = repo.head.commit.tree
             z = repo.git.diff(t)
             print('Differences\n\n' + z + '\n\n')
