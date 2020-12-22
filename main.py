@@ -32,19 +32,18 @@ class GitPuller(object):
         paths = paths.stdout.decode('UTF-8')
         paths = paths.split('\n')
         paths = [x for x in paths if x]
-        # paths = [r'C:\Users\Kamil\PycharmProjects\data-analysis\.git']
-        [print(x) for x in paths]
         return paths
 
     def __manage_update(self, path):
+        print("Actual working path: {}".format(path))
         path = os.path.split(path)[0]
         os.chdir(path)
         repo = git.Repo(os.getcwd())
 
         t = repo.head.commit.tree
         z = repo.git.diff(t)
-        print('Differences\n\n' + z + '\n\n')
-        logging.info('Differences\n\n' + z + '\n\n')
+        print('Differences\n' + z + '\n')
+        logging.info('Differences\n' + z + '\n')
 
         try:
             msg_out = subprocess.check_output(['git', 'pull'])
@@ -71,7 +70,6 @@ class GitPuller(object):
         print('Hard pulling')
         logging.warning('Hard pulling')
 
+
 if __name__ == '__main__':
     GitPuller()
-
-
