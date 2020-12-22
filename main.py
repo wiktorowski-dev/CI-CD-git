@@ -28,31 +28,48 @@ class GitPuller(object):
 
     @staticmethod
     def __find_git_directories():
-        paths = subprocess.run(['find', '/', '-type', 'd', '-name', '.git'], stdout=subprocess.PIPE)
-        paths = paths.stdout.decode('UTF-8')
-        paths = paths.split('\n')
-        paths = [x for x in paths if x]
+        # paths = subprocess.run(['find', '/', '-type', 'd', '-name', '.git'], stdout=subprocess.PIPE)
+        # paths = paths.stdout.decode('UTF-8')
+        # paths = paths.split('\n')
+        # paths = [x for x in paths if x]
+        paths = [r'C:\Users\Kamil\PycharmProjects\data-analysis\.git']
         [print(x) for x in paths]
         return paths
 
-    @staticmethod
-    def __manage_update(path):
+    def __manage_update(self, path):
         path = os.path.split(path)[0]
         os.chdir(path)
         repo = git.Repo(os.getcwd())
-        if repo.is_dirty(untracked_files=True):
-            t = repo.head.commit.tree
-            z = repo.git.diff(t)
-            print('Differences\n\n' + z + '\n\n')
-            os.system('git reset --hard HEAD')
-            logging.info('Differences\n\n' + z + '\n\n')
-            time.sleep(1)
-            print('Pulling')
-            logging.info('Pulling')
-            repo.remotes.origin.pull()
-            time.sleep(1.5)
-            return True
 
+        t = repo.head.commit.tree
+        z = repo.git.diff(t)
+        print('Differences\n\n' + z + '\n\n')
+        logging.info('Differences\n\n' + z + '\n\n')
+
+        try:
+            msg_out = subprocess.check_output(['git', 'pull'])
+        except:
+            msg_out = None
+
+        if not msg_out:
+            self.__hard_pull(repo)
+
+        elif 'already up to date' in msg_out.decode('UTF-8').lower():
+            print('Nothing to pull')
+            logging.info('Nothing to pull')
+            return None
+
+        else:
+            self.__hard_pull(repo)
+
+        return True
+
+    @staticmethod
+    def __hard_pull(repo):
+        os.system('git reset --hard HEAD')
+        repo.remotes.origin.pull()
+        print('Hard pulling')
+        logging.warning('Hard pulling')
 
 if __name__ == '__main__':
     GitPuller()
