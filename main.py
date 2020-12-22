@@ -28,11 +28,11 @@ class GitPuller(object):
 
     @staticmethod
     def __find_git_directories():
-        # paths = subprocess.run(['find', '/', '-type', 'd', '-name', '.git'], stdout=subprocess.PIPE)
-        # paths = paths.stdout.decode('UTF-8')
-        # paths = paths.split('\n')
-        # paths = [x for x in paths if x]
-        paths = [r'C:\Users\Kamil\PycharmProjects\data-analysis\.git']
+        paths = subprocess.run(['find', '/', '-type', 'd', '-name', '.git'], stdout=subprocess.PIPE)
+        paths = paths.stdout.decode('UTF-8')
+        paths = paths.split('\n')
+        paths = [x for x in paths if x]
+        # paths = [r'C:\Users\Kamil\PycharmProjects\data-analysis\.git']
         [print(x) for x in paths]
         return paths
 
