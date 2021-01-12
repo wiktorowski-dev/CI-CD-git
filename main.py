@@ -17,8 +17,8 @@ class GitPuller(object):
         logging.info('Starting work')
         while True:
             exclude_paths = self.__get_paths_to_exclude()
-            paths = self.__find_git_directories(exclude_paths)
-            out = [self.__manage_update(x) for x in paths]
+            paths = self.__find_git_directories()
+            out = [self.__manage_update(x, exclude_paths) for x in paths if x not in exclude_paths]
             if True in out:
                 logging.info('Attempt to the reboot')
                 print('Attempt to the reboot the machine')
@@ -29,15 +29,17 @@ class GitPuller(object):
             time.sleep(15)
 
     @staticmethod
-    def __find_git_directories(exclude_paths):
+    def __find_git_directories():
         paths = subprocess.run(['find', '/', '-type', 'd', '-name', '.git'], stdout=subprocess.PIPE)
         paths = paths.stdout.decode('UTF-8')
         paths = paths.split('\n')
         paths = [x for x in paths if x]
-        paths = [x for x in paths if x not in exclude_paths]
         return paths
 
-    def __manage_update(self, path):
+    def __manage_update(self, path, exclude_paths):
+        exclude = False
+        if path in exclude_paths:
+            exclude = True
         print("Actual working path: {}".format(path))
         path = os.path.split(path)[0]
         os.chdir(path)
@@ -64,6 +66,8 @@ class GitPuller(object):
         else:
             self.__hard_pull(repo)
 
+        if exclude:
+            return None
         return True
 
     @staticmethod
