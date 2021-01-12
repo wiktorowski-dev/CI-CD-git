@@ -22,7 +22,7 @@ class GitPuller(object):
             if True in out:
                 logging.info('Attempt to the reboot')
                 print('Attempt to the reboot the machine')
-                os.system('reboot now')
+                os.system('/sbin/shutdown -r now')
             else:
                 print('Nothing found to update, sleeping')
                 logging.info('Nothing found to update, sleeping')
